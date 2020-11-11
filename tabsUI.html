@@ -89,8 +89,8 @@
       this.tabsData = tabsData;
       this.tabState = 1; // tab id
 
-      const $tabs = document.querySelector('.tabs');
-      $tabs.innerHTML = `<ul class="tab-group">
+      this.$tabs = document.querySelector('.tabs');
+      this.$tabs.innerHTML = `<ul class="tab-group">
       <li id="1" class="tab active">
         <i class="icon fab fa-html5"></i>HTML
       </li>
@@ -109,7 +109,7 @@
         appearance/presentation(CSS) or functionality/ behavior(JavaScript).
       </div>
     </div>`;
-      $tabs.onclick = this.toggleRender.bind(this);
+      this.$tabs.onclick = this.toggleRender.bind(this);
     }
 
     // do someting
@@ -117,7 +117,7 @@
       const $tabContent = document.querySelector('.tab-content');
 
       if (!e.target.matches('.tab-group > .tab')) return;
-      console.log(this.tabsData);
+  
       this.tabsData.forEach(tab => {
         if (tab.id === +e.target.id) {
           this.tabState = +e.target.id;
