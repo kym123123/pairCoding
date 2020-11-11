@@ -99,16 +99,15 @@
 
   <div class="scroll-icon fa fa-angle-double-up"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
   <script>
     const $icon = document.querySelector('.scroll-icon');
-
+    console.log(_);
     const displayBtn = () => {
       $icon.style.display = window.pageYOffset >= 65 ? 'block' : 'none';
     };
 
-    document.onscroll = () => {
-      displayBtn();
-    };
+    document.onscroll = _.throttle(displayBtn, 100);
 
     $icon.onclick = () => {
       window.scroll({ top: 0, left: 0, behavior: 'smooth' });
