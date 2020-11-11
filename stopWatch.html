@@ -42,9 +42,7 @@
     const $display = document.querySelector('.display');
     const $control = document.querySelector('.control');
     const stopWatch = (() => {
-      let min = 0;
-      let sec = 0;
-      let millisec = 0;
+      let [min, sec, millisec] = [0, 0, 0];
       return () => {
         millisec++;
         if (millisec > 99) {
@@ -59,22 +57,19 @@
       };
     })();
     
-    $control.onclick = (e => {
-      let timerId;
+    $control.onclick = (() => {
+      let timerId = 0;
 
       return () => {
         if (isRunning) {
           clearInterval(timerId);
-
-          isRunning = false;
         } else {
           timerId = setInterval(() => {
             stopWatch();
-
-            isRunning = true;
           }, 10);
         }
-        e.target.textContent = isRunning ? 'Start' : 'Stop';
+        isRunning = !isRunning;
+        $control.textContent = isRunning ? 'Stop' : 'Start';
       };
     })();
   </script>
