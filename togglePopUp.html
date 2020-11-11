@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Popup</title>
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400);
+    body {
+      font-family: 'Open Sans';
+      font-weight: 300;
+      background-color: #D6E1E5;
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      color: #DB5B33;
+      font-weight: 300;
+      text-align: center;
+      margin: 0;
+    }
+    .popup {
+      padding: 0 30px;
+      position: relative;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 200px;
+      background-color: #fff;
+      display: none;
+      z-index: 10;
+    }
+    .popup .btn-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #fff;
+      border: 0;
+      cursor: pointer;
+    }
+    .popup .btn-ok, .popup .btn-cancel, .popup input {
+      cursor: pointer;
+      background-color: #fff;
+      border-radius: 2px;
+      border: 2px solid lightgrey;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      opacity: 0.5;
+      background-color: rgba(71, 62, 62, 0.8);
+      display: none;
+      z-index: 2;
+    }
+    /* CSS 작성 바랍니다. */
+  </style>
+</head>
+<body>
+  <h1>JavaScript Popup</h1>
+  <div class="popup">
+    <h1>JavaScript Popup</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+    <button class="btn-close">X</button>
+    <input type="text">
+    <button class="btn-ok">OK</button>
+    <button class="btn-cancel">Cancel</button>
+  </div>
+  <div class="overlay"></div>
+  <button class="toggle-popup">show popup</button>
+  <p class="popup-message"></p>
+  <script>
+    const $popup = document.querySelector('.popup');
+    const $togglePopup = document.querySelector('.toggle-popup');
+    const $overlay = document.querySelector('.overlay');
+    const $btnOkay = document.querySelector('.btn-ok');
+    const $input = document.querySelector('.popup input');
+    const $msg = document.querySelector('.popup-message');
+    $togglePopup.onclick = () => {
+      $popup.style.display = 'block';
+      $overlay.style.display = 'block';
+    };
+
+    $popup.onclick = e => {
+      if (!(e.target.matches('.btn-close') || e.target.matches('.btn-cancel'))) return;
+      $popup.style.display = 'none';
+      $overlay.style.display = 'none';
+      $input.value = '';
+    };
+
+    $btnOkay.onclick = e => {
+      $msg.textContent = $input.value;
+      $popup.style.display = 'none';
+      $overlay.style.display = 'none';
+    };
+
+    $overlay.onclick = e => {
+      $popup.style.display = 'none';
+      $overlay.style.display = 'none';
+      $input.value = '';
+    }
+  </script>
+</body>
+</html>
