@@ -87,24 +87,35 @@
       $overlay.style.display = 'block';
     };
 
-    $popup.onclick = e => {
-      if (!(e.target.matches('.btn-close') || e.target.matches('.btn-cancel'))) return;
+    const closePopUp = () => {
       $popup.style.display = 'none';
       $overlay.style.display = 'none';
+    };
+
+    $popup.onclick = e => {
+      if (!(e.target.matches('.btn-close') || e.target.matches('.btn-cancel'))) return;
+      closePopUp();
       $input.value = '';
     };
 
     $btnOkay.onclick = e => {
       $msg.textContent = $input.value;
-      $popup.style.display = 'none';
-      $overlay.style.display = 'none';
+      closePopUp();
+      $input.value = '';
     };
 
-    $overlay.onclick = e => {
-      $popup.style.display = 'none';
-      $overlay.style.display = 'none';
+    $overlay.onclick = () => {
+      closePopUp();
       $input.value = '';
-    }
+    };
+
+    $input.onkeyup = e => {
+      if (e.key !== 'Enter' || !$input.value) return;
+
+      $msg.textContent = $input.value;
+      $input.value = '';
+      closePopUp();
+    };
   </script>
 </body>
 </html>
