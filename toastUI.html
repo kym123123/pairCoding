@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Toast UI</title>
+  <style>
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400);
+
+  body {
+    /* overflow: hidden; */
+    font-family: 'Open Sans';
+    font-weight: 300;
+    background-color: #D6E1E5;
+  }
+
+  h1 {
+    color: #DB5B33;
+    font-weight: 300;
+    text-align: center;
+  }
+  .show-success, .show-error, .show-warning {}
+  .show-success {}
+  .show-error {}
+  .show-warning {}
+
+  .toast-container {
+    width: 400px;
+    height: 100vh;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    /* background-color: pink; */
+  }
+  .toast {
+    margin: 0;
+    width: 100%;
+    height: 150px;
+    position: absolute;
+    /* transform: translateX(100%); */
+    bottom:0;
+  }
+
+  @keyframes move{
+    from {
+      transform: translateX(400px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .toast.move {
+    animation: move 0.5s ease-in-out;
+  }
+  .Success{
+    background-color: green;
+  }
+  .Error {
+    background-color: red;
+  }
+  .Warning {
+    background-color: yellow;
+  }
+  .toast button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  /* CSS 작성 바랍니다. */
+  </style>
+</head>
+<body>
+  <h1>JavaScript Toast</h1>
+
+  <button class="show-success">Success</button>
+  <button class="show-error">Error</button>
+  <button class="show-warning">Warning</button>
+
+  <div class="toast-container">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
+  <script>
+    const $toastContainer = document.querySelector('.toast-container');
+
+    const arrangeToast = () => {
+      [...$toastContainer.children].forEach((toast, i, arr) => {
+        toast.style.transform = `translate(0px, ${-(arr.length - (i + 1)) * 150}px)`;
+      });
+    };
+    
+    // 클로저
+    (() => {
+      let numOfToast;
+
+      const addToast = e => { // 추가 이벤트
+        if (!e.target.matches('body > button')) return;
+
+        numOfToast = [...$toastContainer.children].length;
+        const $div = document.createElement('div');
+        $div.classList.add(e.target.textContent);
+        $div.classList.add('toast');
+        $div.classList.add('move');
+
+        const toastHtml = $div.classList.contains('Success')
+          ? `<h2>Well done! ${numOfToast}</h2><p>This is a success Alert!</p><button>x</button>`
+          : (($div.classList.contains('Error')
+            ? `<h2>Check it out! ${numOfToast}</h2><p>This is a error Alert!</p><button>x</button>`
+            : `<h2>Check it out! ${numOfToast}</h2><p>This is a Warning Alert!</p><button>x</button>`));
+
+        $div.innerHTML = toastHtml;
+        $toastContainer.appendChild($div);
+
+        arrangeToast();
+
+        setTimeout(() => {
+          $div.remove();
+          arrangeToast();
+          // numOfToast = [...$toastContainer.children].length;
+        }, 4000);
+      };
+
+      document.onclick = _.throttle(addToast, 500);
+
+      $toastContainer.onclick = e => { // 삭제 이벤트
+        if (!e.target.matches('.toast button')) return;
+        e.target.parentNode.remove();
+        numOfToast = [...$toastContainer.children].length;
+        arrangeToast();
+      };
+    })();
+  </script>
+</body>
+</html>
